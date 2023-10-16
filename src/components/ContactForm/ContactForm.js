@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/actions';
+import { addContact } from 'redux/contactsSlice';
 
 import { Formik, Field } from 'formik';
 import { nanoid } from 'nanoid';
 
 import { CardForm, Button } from './ContactForm.styled';
+import { getContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
 
   const handleSubmit = newContact => {
