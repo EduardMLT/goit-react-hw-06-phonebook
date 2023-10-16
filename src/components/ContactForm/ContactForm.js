@@ -1,8 +1,24 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/actions';
+
 import { Formik, Field } from 'formik';
 import { nanoid } from 'nanoid';
+
 import { CardForm, Button } from './ContactForm.styled';
 
-export const ContactForm = ({ addContact }) => {
+export const ContactForm = () => {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+
+  const handleSubmit = newContact => {
+    if (contacts.find(contact => contact.name === newContact.name)) {
+      alert(`${newContact.name} is already in contacts.`);
+      return;
+    }
+
+    dispatch(addContact({ id: nanoid(), ...newContact }));
+  };
+
   return (
     <Formik
       initialValues={{
@@ -10,7 +26,7 @@ export const ContactForm = ({ addContact }) => {
         number: '',
       }}
       onSubmit={(values, actions) => {
-        addContact({ ...values, id: nanoid() });
+        handleSubmit(values);
         actions.resetForm();
       }}
     >
